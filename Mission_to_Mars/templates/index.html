@@ -3,6 +3,52 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Mission to Mars</title>
+  <link rel="bootswatch" href="bootswatch.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
+
+<body>
+  <div class="container">
+    <div class="jumbotron text-center">
+      <h1>Mission to Mars</h1>
+      <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+    </div>
+
+    <!-- Mars News -->
+    <div class="row" id="mars-lastest-news">
+      <div class="col-md-12">
+        <h1 class="heading">Latest Mars News</h1>
+        <h4 class="heading">{{info.news_title}}</h4>
+        <small>{{info.news_paragraph}}</small>
+      </div>
+    </div>
+    <div class="row"></div>
+      <div class="col-md-12 col-lg-8">
+        <h1 class="heading">Featured Mars Image</h1>
+        <img src={{info.featured_image}} alt="Image of Mars" width = 100%>
+      </div>
+      <br>
+      <div class="col-md-12 col-lg-4"></div>
+        <h1 class="heading"> Mars Facts</h1>
+        {{info.mars_facts_table | safe}}
+    </div>
+    <div class="container">
+        <div class="tex-center">
+          <h1 class="heading text-center">Mars Hemispheres</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-lg-6"></div>
+          <img src="{{info.mars_hemispheres[0].image_url}}">
+          <h2 class="heading">{{info.mars_hemispheres[0].title}}</h2>
+      </div>
+
+  </div>
+</body>
+
+</html>
+
+

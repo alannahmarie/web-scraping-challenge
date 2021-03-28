@@ -1,30 +1,31 @@
 import pandas as pd
 import requests
+import time
 from splinter import Browser
 from bs4 import BeautifulSoup as bs
 from webdriver_manager.chrome import ChromeDriverManager
 
 def scrape():
 
-    scraped_data = {}
-
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=False)
+
+    mars_data = {}
 
     url = "https://mars.nasa.gov/news/"
     browser.visit(url)
 
     html = browser.html
     soup = bs(html, 'html.parser')
+    time.sleep(10)
     news = soup.find("li", class_="slide")
+
 
     news_title = news.find("div", class_="content_title").text
     news_paragraph = news.find("div", class_="article_teaser_body").text
 
-    scraped_data["news_title"] = news_title
-    scraped_data["news_paragraph"] = news_paragraph
-
-    browser.quit()
+    mars_data["news_title"] = news_title
+    mars_data["news_paragraph"] = news_paragraph
 
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=False)
@@ -34,14 +35,13 @@ def scrape():
 
     html = browser.html
     soup = bs(html, 'html.parser')
+    time.sleep(10)
     img_src = soup.find(class_='headerimage fade-in')['src']
     crop_img_url = img_url[:-10]
 
     featured_image_url = (f'{crop_img_url}{img_src}')
 
-    scraped_data["featured_image"] = featured_image_url
-
-    browser.quit()
+    mars_data["featured_image"] = featured_image_url
 
     facts_url = "https://space-facts.com/mars/"
 
@@ -49,11 +49,9 @@ def scrape():
 
     mars_facts = tables[0]
 
-    facts_html = mars_facts.to_html(header=False)
+    facts_html = mars_facts.to_html(header=False, index=False)
 
-    scraped_data["mars_facts_table"] = facts_html
-
-    browser.quit()
+    mars_data["mars_facts_table"] = facts_html
 
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=False)
@@ -61,6 +59,8 @@ def scrape():
     hemi_url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
 
     crop_hemi_url = hemi_url.split("/search")[0]
+
+    hemisphere_image_urls = []
 
     hemisphere_image_urls = []
 
@@ -83,10 +83,9 @@ def scrape():
         "image_url": (f"{crop_hemi_url}{hem_img_url}")
         })
 
-    scraped_data["mars_hemisperes"] = hemisphere_image_urls
+        mars_data["mars_hemishperes"] = hemisphere_image_urls
+
 
     browser.quit()
-    print(scraped_data)
-    return scraped_data
 
-
+    return mars_data
