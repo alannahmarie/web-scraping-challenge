@@ -24,9 +24,6 @@ def scrape():
     news_title = news.find("div", class_="content_title").text
     news_paragraph = news.find("div", class_="article_teaser_body").text
 
-    mars_data["news_title"] = news_title
-    mars_data["news_paragraph"] = news_paragraph
-
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=False)
 
@@ -41,8 +38,6 @@ def scrape():
 
     featured_image_url = (f'{crop_img_url}{img_src}')
 
-    mars_data["featured_image"] = featured_image_url
-
     facts_url = "https://space-facts.com/mars/"
 
     tables = pd.read_html(facts_url)
@@ -51,16 +46,12 @@ def scrape():
 
     facts_html = mars_facts.to_html(header=False, index=False)
 
-    mars_data["mars_facts_table"] = facts_html
-
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=False)
 
     hemi_url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
 
     crop_hemi_url = hemi_url.split("/search")[0]
-
-    hemisphere_image_urls = []
 
     hemisphere_image_urls = []
 
@@ -83,8 +74,13 @@ def scrape():
         "image_url": (f"{crop_hemi_url}{hem_img_url}")
         })
 
-        mars_data["mars_hemishperes"] = hemisphere_image_urls
-
+        mars_data = {
+        'news_title': news_title,
+        'news_paragraph': news_paragraph,
+        'featured_image': featured_image_url, 
+        'mars_facts_table': facts_html, 
+        'mars_hemispheres': hemisphere_image_urls
+        }
 
     browser.quit()
 

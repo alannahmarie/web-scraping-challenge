@@ -41,9 +41,14 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12 col-lg-6"></div>
-          <img src="{{info.mars_hemispheres[0].image_url}}">
-          <h2 class="heading">{{info.mars_hemispheres[0].title}}</h2>
+        <div class="col-md-12 col-lg-6">
+          <img src="{{info.mars_hemispheres.hemisphere_image_urls[0].image_url}}">
+          <h2 class="heading">{{info.mars_hemispheres.hemisphere_image_urls[0].title}}</h2>
+        </div>
+          <div class="col-md-12 col-lg-6">
+          <img src="{{info.mars_hemispheres.hemisphere_image_urls[1].image_url}}">
+          <h2 class="heading">{{info.mars_hemispheres.hemisphere_image_urls[1].title}}</h2>
+        </div>
       </div>
 
   </div>
